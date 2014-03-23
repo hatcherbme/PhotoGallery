@@ -9,12 +9,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -68,6 +70,18 @@ public class PhotoGalleryFragment extends VisibleFragment {
 		mGridView = (GridView)v.findViewById(R.id.gridView);
 		
 		setupAdapter();
+		
+		mGridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> gridView, View view, int pos,
+					long id) {
+				GalleryItem item = mItems.get(pos);
+				Uri photoPageUri = Uri.parse(item.getPhotoPageUrl());
+				Intent i = new Intent(getActivity(), PhotoPageActivity.class);
+					i.setData(photoPageUri);
+				startActivity(i);
+			}
+		});
 		
 		return v;
 	}
